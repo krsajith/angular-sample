@@ -1,0 +1,77 @@
+
+
+// app.component.html
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+  <div formArrayName="departments">
+    <!-- Departments Loop -->
+    <div *ngFor="let department of departments.controls; let i = index" 
+         [formGroupName]="i" class="department-entry">
+      
+      <!-- Department Name Input -->
+      <input 
+        formControlName="departmentName" 
+        placeholder="Department Name" 
+        type="text"
+      >
+      
+      <!-- Remove Department Button -->
+      <button type="button" (click)="removeDepartment(i)">
+        Remove Department
+      </button>
+
+      <!-- Nested Employees FormArray -->
+      <div formArrayName="employees">
+        <!-- Employees Loop -->
+        <div style="display: flex;gap: 1rem;" *ngFor="let employee of getEmployees(i).controls; let j = index" 
+             [formGroupName]="j" class="employee-entry">
+          
+          <!-- Employee Name Input -->
+          <input 
+            formControlName="name" 
+            placeholder="Employee Name" 
+            type="text"
+          >
+          
+          <!-- Position Input -->
+          <input 
+            formControlName="position" 
+            placeholder="Position" 
+            type="text"
+          >
+          
+          <!-- Salary Input -->
+          <input 
+            formControlName="salary" 
+            placeholder="Salary" 
+            type="number"
+          >
+          
+          <!-- Remove Employee Button -->
+          <span style="display: flex;gap: 1rem;">
+          <button type="button" (click)="removeEmployee(i, j)">
+            Remove Employee
+          </button>
+          <button type="button" (click)="moveUp(i, j)">
+            Move up
+          </button>
+        </span>
+        </div>
+      </div>
+
+      <!-- Add Employee Button -->
+      <button type="button" (click)="addEmployee(i)">
+        Add Employee
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Department Button -->
+  <button type="button" (click)="addDepartment()">
+    Add Department
+  </button>
+
+  <!-- Submit Button -->
+  <button type="submit" [disabled]="!companyForm.valid">
+    Submit
+  </button>
+</form>
