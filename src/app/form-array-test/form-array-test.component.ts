@@ -33,12 +33,12 @@ export class FormArrayTestComponent {
   }
 
   // Create a department form group with nested employees FormArray
-  createDepartmentGroup(): FormGroup {
+  createDepartmentGroup(numberOfEmployees:number = 1): FormGroup {
     return this.fb.group({
       departmentName: ['', Validators.required],
-      employees: this.fb.array([
-        this.createEmployeeGroup()
-      ])
+      employees: this.fb.array(
+        Array(numberOfEmployees).fill(this.createEmployeeGroup())
+      )
     });
   }
 
@@ -57,8 +57,10 @@ export class FormArrayTestComponent {
   }
 
   // Add a new department
-  addDepartment() {
-    this.departments.push(this.createDepartmentGroup());
+  addDepartment(value?:any) {
+    const dep = this.createDepartmentGroup(value?.employees?.length);
+    dep.patchValue(value);
+    this.departments.push(dep);
   }
 
   // Remove a department
@@ -88,14 +90,14 @@ export class FormArrayTestComponent {
 
   moveUp(i: number,j: number) {
      console.log(i,j);
-     const empData=  this.getEmployees(i).value;
-     const current = empData[j];
-     empData[j] = empData[j-1]
-     empData[j-1] = current;
-     console.log(empData);
+     const data=  this.getEmployees(i).value;
+     const current = data[j];
+     data[j] = data[j-1]
+     data[j-1] = current;
+     console.log(data);
      
      this.getEmployees(i).clear();
-     for(const emp of empData){
+     for(const emp of data){
        this.addEmployee(i,emp)
       //  emp.patchValue(emp);
      }
@@ -103,4 +105,25 @@ export class FormArrayTestComponent {
      console.log(this.getEmployees(i).value);
      
     }
+
+    moveUpDepartment(i: number) {
+
+          const employees=  this.getEmployees(i).value;
+
+          const data=  this.departments.value;
+          console.log(data);
+          
+          const current = data[i];
+          data[i] = data[i-1]
+          data[i-1] = current;
+          console.log(data);
+
+          this.departments.clear();
+          for(const dep of data){
+            this.addDepartment(dep)
+          }
+           
+          // console.log(this.getEmployees(i).value);
+      }
+      
 }
