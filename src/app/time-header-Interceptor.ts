@@ -18,8 +18,6 @@ export const timeHeaderInterceptor: HttpInterceptorFn = (req, next) => {
         const date = new Date().toISOString();
         document.cookie=`X-Current-Time=${date};path=/`
     }
-       
-    
   })
   );
 };
