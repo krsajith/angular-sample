@@ -27,10 +27,7 @@ export class FormArrayTestComponent {
     this.addDepartment();
   }
 
-  // Getter for departments FormArray
-  get departments(): FormArray {
-    return this.companyForm.get('departments') as FormArray;
-  }
+
 
   // Create a department form group with nested employees FormArray
   createDepartmentGroup(numberOfEmployees:number = 1): FormGroup {
@@ -49,6 +46,11 @@ export class FormArrayTestComponent {
       position: ['', Validators.required],
       salary: ['', [Validators.required, Validators.min(0)]]
     });
+  }
+
+    // Getter for departments FormArray
+  get departments(): FormArray {
+    return this.companyForm.get('departments') as FormArray;
   }
 
   // Get employees FormArray for a specific department

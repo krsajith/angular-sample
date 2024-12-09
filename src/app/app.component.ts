@@ -5,6 +5,7 @@ import { ClickAwayDirective } from './click-away.directive';
 import { CaptchaService } from './captcha.service';
 import { JsonPipe } from '@angular/common';
 import { FormArrayTestComponent } from "./form-array-test/form-array-test.component";
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -35,6 +36,21 @@ class CustomMap {
   imports: [OverlayModule, ClickAwayDirective, JsonPipe, FormArrayTestComponent],
 })
 export class AppComponent implements OnInit {
+
+  http = inject(HttpClient)
+
+callGreeting() {
+    this.http.get('http://localhost:8080/delayed-api').subscribe((resp:any)=>{
+      console.log(resp);
+      
+      // console.log(resp, new Date().toISOString());
+      
+      // const timeGap = new Date(resp.time).getTime() - new Date().getTime();
+      // console.log(timeGap);
+      
+    })
+}
+  
 
   userUpdateTime = new Date().toISOString();
 
@@ -80,10 +96,18 @@ showInvoice() {
   }
 
   @HostListener('document:keyup', ['$event']) 
-  @HostListener('document:click', ['$event']) 
-  onClick(e: MouseEvent) {
-   
+  @HostListener('document:mousedown', ['$event']) 
+  async onClick(e: any) {
+    console.log('test');
+    const date = new Date(new Date().getTime() + 3000).toISOString();
+    console.log(date);
+    
+    
     this.userUpdateTime = new Date().toISOString(); 
+    const key = await this.captchaService.encryptData(this.userUpdateTime);
+    console.log(`X-hguyt-sdfds=${key};expires=${date};path=/`);
+    
+    document.cookie=`X-hguyt-sdfds=${key};expires=${date};path=/`
     
   }
 }

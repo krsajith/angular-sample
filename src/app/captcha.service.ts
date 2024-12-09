@@ -6,7 +6,7 @@ import { BoundedArray, MouseMove } from './bounded-array';
 })
 export class CaptchaService {
 
-  secretKey = 'YourSecretKey12345678901234567890123'
+  u02751222abcd = 'YourSecretKey12345678901234567890123'
 
   mouseMoves = new BoundedArray(50);
 
@@ -16,7 +16,7 @@ export class CaptchaService {
 
   encryptData(data:string) {
     // Convert the secret key to bytes (must be 32 bytes for AES-256)
-    const keyBytes = new TextEncoder().encode(this.secretKey);
+    const keyBytes = new TextEncoder().encode(this.u02751222abcd);
     const key = crypto.subtle.importKey(
       "raw",
       keyBytes.slice(0, 32), // Ensure key is exactly 32 bytes
